@@ -10,9 +10,11 @@ class MatrixCodeRain {
         this.animationId = null;
         this.isRunning = false;
         this.drops = [];
+        this.columnSequences = []; // Store character sequences for each column
         this.userText = '';
         this.speed = 1;
         this.color = '#00ff00';
+        this.visibilityMode = 'mixed'; // 'mixed', 'before', 'after'
         this.matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン!@#$%^&*()_+-=[]{}|;:,.<>?';
 
         window.addEventListener('resize', () => this.resize());
@@ -27,6 +29,9 @@ class MatrixCodeRain {
         document.getElementById('stopBtn').addEventListener('click', () => this.stop());
         document.getElementById('clearBtn').addEventListener('click', () => this.clear());
         document.getElementById('exportBtn').addEventListener('click', () => this.exportImage());
+        document.getElementById('visibility').addEventListener('change', (e) => {
+            this.visibilityMode = e.target.value;
+        });
         document.getElementById('speed').addEventListener('input', (e) => {
             this.speed = parseFloat(e.target.value);
             document.getElementById('speedValue').textContent = e.target.value + 'x';
@@ -48,6 +53,7 @@ class MatrixCodeRain {
         this.isRunning = true;
         this.clear();
         this.initializeDrops();
+        this.generateSequences();
         this.animate();
     }
 
@@ -75,6 +81,45 @@ class MatrixCodeRain {
         }
     }
 
+    generateSequences() {
+        this.columnSequences = [];
+        for (let i = 0; i < this.columns; i++) {
+            const sequence = this.createSequence();
+            this.columnSequences[i] = sequence;
+        }
+    }
+
+    createSequence() {
+        const sequenceLength = Math.ceil(this.height / this.fontSize) + 5;
+        const sequence = [];
+        
+        for (let i = 0; i < sequenceLength; i++) {
+            const randomUserIndex = Math.floor(Math.random() * this.userText.length);
+            const userChar = this.userText[randomUserIndex];
+            
+            let charData = {
+                char: userChar,
+                isUserText: true,
+                position: i
+            };
+
+            // Add surrounding matrix characters based on visibility mode
+            if (this.visibilityMode === 'before' || this.visibilityMode === 'mixed') {
+                const before = this.getRandomChar();
+                sequence.push({ char: before, isUserText: false, position: i });
+            }
+
+            sequence.push(charData);
+
+            if (this.visibilityMode === 'after' || this.visibilityMode === 'mixed') {
+                const after = this.getRandomChar();
+                sequence.push({ char: after, isUserText: false, position: i });
+            }
+        }
+        
+        return sequence;
+    }
+
     getRandomChar() {
         return this.matrixChars[Math.floor(Math.random() * this.matrixChars.length)];
     }
@@ -84,9 +129,7 @@ class MatrixCodeRain {
         this.ctx.fillRect(0, 0, this.width, this.height);
 
         this.ctx.font = `${this.fontSize}px Courier New`;
-        this.ctx.fillStyle = this.color;
-        this.ctx.shadowColor = this.color;
-        this.ctx.shadowBlur = 10;
+        this.ctx.textAlign = 'center';
 
         const columnWidth = this.width / this.columns;
 
@@ -94,26 +137,25 @@ class MatrixCodeRain {
             const x = i * columnWidth + columnWidth / 2;
             const y = this.drops[i];
 
-            // Draw random Matrix characters
-            let char = this.getRandomChar();
+            const sequence = this.columnSequences[i] || [];
+            const charIndex = Math.floor(y / this.fontSize);
 
-            // Randomly insert user text
-            if (Math.random() < 0.3) {
-                const randomIndex = Math.floor(Math.random() * this.userText.length);
-                char = this.userText[randomIndex];
-                
-                // Brighter glow for user text
-                this.ctx.fillStyle = this.color;
-                this.ctx.shadowBlur = 15;
-                this.ctx.shadowColor = this.color;
-            } else {
-                // Dimmer for background characters
-                this.ctx.fillStyle = this.hexToRgba(this.color, 0.5);
-                this.ctx.shadowBlur = 5;
+            if (charIndex < sequence.length) {
+                const charData = sequence[charIndex];
+
+                if (charData.isUserText) {
+                    // Bright glow for user text
+                    this.ctx.fillStyle = this.color;
+                    this.ctx.shadowColor = this.color;
+                    this.ctx.shadowBlur = 20;
+                } else {
+                    // Dimmer for background characters
+                    this.ctx.fillStyle = this.hexToRgba(this.color, 0.6);
+                    this.ctx.shadowBlur = 8;
+                }
+
+                this.ctx.fillText(charData.char, x, y);
             }
-
-            this.ctx.textAlign = 'center';
-            this.ctx.fillText(char, x, y);
 
             // Update drop position
             this.drops[i] += this.fontSize * this.speed * 0.5;
@@ -121,6 +163,8 @@ class MatrixCodeRain {
             // Reset drop when it falls off screen
             if (this.drops[i] > this.height) {
                 this.drops[i] = 0;
+                // Regenerate sequence for this column
+                this.columnSequences[i] = this.createSequence();
             }
         }
 
