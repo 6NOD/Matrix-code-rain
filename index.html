@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Code Rain</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Matrix Code Rain</h1>
+            <p>Enter your text and watch it fall in Matrix style</p>
+        </header>
+
+        <div class="control-panel">
+            <div class="control-group">
+                <label for="userInput">Enter Text or Sentence:</label>
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="Type something..." 
+                    maxlength="50"
+                >
+                <button id="startBtn" class="btn btn-start">Start Rain</button>
+            </div>
+
+            <div class="control-group">
+                <label for="speed">Animation Speed:</label>
+                <input 
+                    type="range" 
+                    id="speed" 
+                    min="0.5" 
+                    max="3" 
+                    step="0.5" 
+                    value="1"
+                >
+                <span id="speedValue">1x</span>
+            </div>
+
+            <div class="control-group">
+                <label for="density">Rain Density:</label>
+                <input 
+                    type="range" 
+                    id="density" 
+                    min="1" 
+                    max="10" 
+                    step="1" 
+                    value="5"
+                >
+                <span id="densityValue">5</span>
+            </div>
+
+            <div class="control-group">
+                <label for="colorPicker">Color:</label>
+                <input 
+                    type="color" 
+                    id="colorPicker" 
+                    value="#00ff00"
+                >
+            </div>
+
+            <div class="control-group">
+                <button id="stopBtn" class="btn btn-stop">Stop Rain</button>
+                <button id="clearBtn" class="btn btn-clear">Clear Canvas</button>
+                <button id="exportBtn" class="btn btn-export">Export as Image</button>
+            </div>
+        </div>
+
+        <canvas id="matrixCanvas"></canvas>
+
+        <footer>
+            <p>Made with 💚 - Matrix Code Rain Generator</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
