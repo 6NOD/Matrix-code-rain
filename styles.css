@@ -63,7 +63,8 @@ header p {
 
 .control-group input[type="text"],
 .control-group input[type="range"],
-.control-group input[type="color"] {
+.control-group input[type="color"],
+.control-group select {
     padding: 8px 12px;
     background-color: rgba(0, 50, 0, 0.7);
     border: 2px solid #00ff00;
@@ -76,7 +77,8 @@ header p {
 
 .control-group input[type="text"]:focus,
 .control-group input[type="range"]:focus,
-.control-group input[type="color"]:focus {
+.control-group input[type="color"]:focus,
+.control-group select:focus {
     border-color: #00ff00;
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
     background-color: rgba(0, 80, 0, 0.9);
@@ -98,6 +100,21 @@ header p {
     padding: 4px;
     height: 40px;
     width: 60px;
+}
+
+.control-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5em;
+}
+
+.control-group select option {
+    background-color: #000a00;
+    color: #00ff00;
 }
 
 .control-group span {
@@ -180,7 +197,8 @@ footer {
         padding: 15px;
     }
 
-    .control-group input[type="text"] {
+    .control-group input[type="text"],
+    .control-group select {
         font-size: 0.9rem;
     }
 }
@@ -197,6 +215,10 @@ footer {
 
     .btn {
         padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .control-group select {
         font-size: 0.9rem;
     }
 }
