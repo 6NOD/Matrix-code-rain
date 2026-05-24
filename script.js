@@ -15,7 +15,8 @@ class MatrixCodeRain {
         this.speed = 1;
         this.color = '#00ff00';
         this.visibilityMode = 'mixed'; // 'mixed', 'before', 'after'
-        this.matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン!@#$%^&*()_+-=[]{}|;:,.<>?';
+        // Removed Japanese characters - only keep user input text and numbers/symbols
+        this.matrixChars = '01!@#$%^&*()_+-=[]{}|;:,.<>?';
 
         window.addEventListener('resize', () => this.resize());
         this.setupEventListeners();
@@ -128,7 +129,7 @@ class MatrixCodeRain {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         this.ctx.fillRect(0, 0, this.width, this.height);
 
-        this.ctx.font = `${this.fontSize}px Courier New`;
+        this.ctx.font = `bold ${this.fontSize}px Courier New`;
         this.ctx.textAlign = 'center';
 
         const columnWidth = this.width / this.columns;
@@ -144,14 +145,14 @@ class MatrixCodeRain {
                 const charData = sequence[charIndex];
 
                 if (charData.isUserText) {
-                    // Bright glow for user text
+                    // Bright, bold glow for user text
                     this.ctx.fillStyle = this.color;
                     this.ctx.shadowColor = this.color;
-                    this.ctx.shadowBlur = 20;
+                    this.ctx.shadowBlur = 25;
                 } else {
                     // Dimmer for background characters
-                    this.ctx.fillStyle = this.hexToRgba(this.color, 0.6);
-                    this.ctx.shadowBlur = 8;
+                    this.ctx.fillStyle = this.hexToRgba(this.color, 0.4);
+                    this.ctx.shadowBlur = 3;
                 }
 
                 this.ctx.fillText(charData.char, x, y);
