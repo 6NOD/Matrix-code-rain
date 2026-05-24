@@ -10,7 +10,7 @@
     <div class="container">
         <header>
             <h1>🎬 Matrix Code Rain</h1>
-            <p>Enter your text and watch it fall in Matrix style</p>
+            <p>Enter your text and watch it fall in Matrix style - Your text will be clearly visible!</p>
         </header>
 
         <div class="control-panel">
@@ -22,7 +22,15 @@
                     placeholder="Type something..." 
                     maxlength="50"
                 >
-                <button id="startBtn" class="btn btn-start">Start Rain</button>
+            </div>
+
+            <div class="control-group">
+                <label for="visibility">Text Visibility Style:</label>
+                <select id="visibility">
+                    <option value="mixed">Mixed Position (Before & After)</option>
+                    <option value="before">Matrix Before Text</option>
+                    <option value="after">Matrix After Text</option>
+                </select>
             </div>
 
             <div class="control-group">
@@ -60,7 +68,8 @@
                 >
             </div>
 
-            <div class="control-group">
+            <div class="control-group button-group">
+                <button id="startBtn" class="btn btn-start">Start Rain</button>
                 <button id="stopBtn" class="btn btn-stop">Stop Rain</button>
                 <button id="clearBtn" class="btn btn-clear">Clear Canvas</button>
                 <button id="exportBtn" class="btn btn-export">Export as Image</button>
@@ -70,7 +79,7 @@
         <canvas id="matrixCanvas"></canvas>
 
         <footer>
-            <p>Made with 💚 - Matrix Code Rain Generator</p>
+            <p>Made with 💚 - Matrix Code Rain Generator | Your text shines bright in the Matrix</p>
         </footer>
     </div>
 
